@@ -10,6 +10,7 @@
   * 实战示例
     * [Mock 持久层依赖](mockito/in-action/DAO-Simple.md)
 * Power Mock
+  * [简介](powermock/Introduction.md)
 * [Spring Test](//hello-world-example.github.io/Spring/#/spring-test/)
 * [Spring Boot Test](//hello-world-example.github.io/Spring-Boot/#/unit-test/index)
 
