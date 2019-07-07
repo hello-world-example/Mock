@@ -9,28 +9,15 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mock-ito-one</artifactId>
+    <artifactId>mock-spring</artifactId>
 
     <dependencies>
-
-<dependency>
-    <groupId>org.mockito</groupId>
-    <artifactId>mockito-core</artifactId>
-    <version>1.10.19</version>
-</dependency>
-
-<dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-test</artifactId>
-    <version>4.3.24.RELEASE</version>
-</dependency>
-
-<dependency>
-    <groupId>com.54chen</groupId>
-    <artifactId>paoding-rose-jade</artifactId>
-    <version>1.1</version>
-</dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>1.5.21.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 

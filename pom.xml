@@ -12,6 +12,7 @@
         <module>mock-ito-one</module>
         <module>mock-ito-two</module>
         <module>mock-power</module>
+        <module>mock-spring</module>
     </modules>
 
 
