@@ -1,6 +1,6 @@
 package xyz.kail.demo.mock.power;
 
-public class FinalMethodCase {
+public class PrivateMethodCase {
 
     public String getSomeWorld() {
         return getHello() + " World";
@@ -9,8 +9,7 @@ public class FinalMethodCase {
     /**
      * final 方法
      */
-    private String getHello() {
-        System.out.println("getHello");
+    private static String getHello() {
         return "Hello";
     }
 }
