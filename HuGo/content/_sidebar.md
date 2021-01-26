@@ -12,6 +12,8 @@ headless: true
   * [Mock 持久层依赖]({{< relref "/docs/mockito/in-action/DAO-Simple.md" >}})
 * **Power Mock**
   * [Power Mock 介绍]({{< relref "/docs/powermock/Introduction.md" >}})
+* **Spring Test**
+  * [MockMvc]({{< relref "/docs/spring-test/MockMvc.md" >}})
 * [Spring Boot Test](//hello-world-example.github.io/Spring-Boot/#/unit-test/index)
 
 
