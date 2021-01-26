@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="PowerMock 简介 Mockito 不能 mock 静态、final、私有方法 等，PowerMock 能够完美的弥补 Mockito 的不足。
+PowerMock 使用一个 自定义类加载器 和 字节码操作 来模拟
+ 静态方法 构造函数 final 类 和 方法 私有方法 去 除静态初始化器 &hellip;  @PrepareForTest 这个注解告诉 PowerMock 准备测试某些类，需要使用此注解定义的类通常是需要进行字节码操作的类，包括带有 final、private、static 或 native方法 的类。
+这个注解可以放在 测试类 或者 单独的测试方法 中。
+ 如果放在一个类上，这个测试类中的所有测试方法都将由 PowerMock处理 如果要为单个方法重写此行为，只需在特定测试方法上放置 @PrepareForTest 注解。例如，如果您想在测试方法A中修改类X，但在测试方法B中希望X完好无损，那么这很有用。在这种情况下，您在方法B上放置@PrepareForTest，并从value()列表中排除类X 有时你需要准备内部类来进行测试，这可以通过提供应该模拟到 fullyQualifiedNames() 列表的内部类的完全限定名来完成  Target( { ElementType.TYPE, ElementType.METHOD }) @Retention(RetentionPolicy.RUNTIME) @Documented @Inherited public @interface PrepareForTest { Class&lt;?&gt;[] value() default IndicateReloadClass.class; String[] fullyQualifiedNames() default &#34;&#34;; ByteCodeFramework byteCodeFramework() default ByteCodeFramework."><meta property="og:title" content="" />
+<meta property="og:description" content="PowerMock 简介 Mockito 不能 mock 静态、final、私有方法 等，PowerMock 能够完美的弥补 Mockito 的不足。
+PowerMock 使用一个 自定义类加载器 和 字节码操作 来模拟
+ 静态方法 构造函数 final 类 和 方法 私有方法 去 除静态初始化器 &hellip;  @PrepareForTest 这个注解告诉 PowerMock 准备测试某些类，需要使用此注解定义的类通常是需要进行字节码操作的类，包括带有 final、private、static 或 native方法 的类。
+这个注解可以放在 测试类 或者 单独的测试方法 中。
+ 如果放在一个类上，这个测试类中的所有测试方法都将由 PowerMock处理 如果要为单个方法重写此行为，只需在特定测试方法上放置 @PrepareForTest 注解。例如，如果您想在测试方法A中修改类X，但在测试方法B中希望X完好无损，那么这很有用。在这种情况下，您在方法B上放置@PrepareForTest，并从value()列表中排除类X 有时你需要准备内部类来进行测试，这可以通过提供应该模拟到 fullyQualifiedNames() 列表的内部类的完全限定名来完成  Target( { ElementType.TYPE, ElementType.METHOD }) @Retention(RetentionPolicy.RUNTIME) @Documented @Inherited public @interface PrepareForTest { Class&lt;?&gt;[] value() default IndicateReloadClass.class; String[] fullyQualifiedNames() default &#34;&#34;; ByteCodeFramework byteCodeFramework() default ByteCodeFramework." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hello-world-example.github.io/Mock/docs/powermock/Introduction/" />
+
+<title>Introduction | Mock</title>
+<link rel="icon" href="/Mock/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/Mock/book.min.d436f463c9471cfab26a8b71cd2f50b6abf5225806391453da4ca111d1834fef.css" integrity="sha256-1Db0Y8lHHPqyaotxzS9Qtqv1IlgGORRT2kyhEdGDT&#43;8=">
+
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/Mock"><span>Mock</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><strong>JUnit4</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/junit4/RunWith/">@RunWith</a></li>
+<li>
+  <a href="/Mock/docs/junit4/Rule/">@Rule</a></li>
+</ul>
+</li>
+<li>
+  <a href="/Mock/docs/Mock-Introduction/">Mock 简介</a></li>
+<li><strong>Mockito</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/mockito/Java-Doc/">[译] Java Doc</a></li>
+<li>
+  <a href="/Mock/docs/mockito/Mockito-Tutorial/">[转] Mockito 教程</a></li>
+<li>
+  <a href="/Mock/docs/mockito/in-action/DAO-Simple/">Mock 持久层依赖</a></li>
+</ul>
+</li>
+<li><strong>Power Mock</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/powermock/Introduction/"class=active>Power Mock 介绍</a></li>
+</ul>
+</li>
+<li>
+  <a href="//hello-world-example.github.io/Spring-Boot/#/unit-test/index">Spring Boot Test</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/Mock/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Introduction</strong>
+
+  <label for="toc-control">
+    <img src="/Mock/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#powermock-简介">PowerMock 简介</a>
+      <ul>
+        <li><a href="#访问内部状态">访问内部状态</a></li>
+        <li><a href="#抑制不需要的行为">抑制不需要的行为</a>
+          <ul>
+            <li><a href="#抑制构造函数">抑制构造函数</a></li>
+            <li><a href="#抑制私有方法">抑制私有方法</a></li>
+            <li><a href="#抑制静态初代码块">抑制静态初代码块</a></li>
+            <li><a href="#抑制字段">抑制字段</a></li>
+          </ul>
+        </li>
+        <li><a href="#mockito-扩展功能">Mockito 扩展功能</a>
+          <ul>
+            <li><a href="#mock-public-静态方法">Mock public 静态方法</a></li>
+            <li><a href="#mock-final方法">Mock final方法</a></li>
+            <li><a href="#mock-私有方法">Mock 私有方法</a></li>
+          </ul>
+        </li>
+        <li><a href="#read-more">Read More</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="powermock-简介">PowerMock 简介</h1>
+<p>Mockito 不能 mock <code>静态</code>、<code>final</code>、<code>私有方法</code> 等，PowerMock 能够完美的弥补 Mockito 的不足。</p>
+<p>PowerMock 使用一个 <strong>自定义类加载器</strong> 和 <strong>字节码操作</strong> 来模拟</p>
+<ul>
+<li>静态方法</li>
+<li>构造函数</li>
+<li>final 类 和 方法</li>
+<li>私有方法</li>
+<li>去 除静态初始化器</li>
+<li>&hellip;</li>
+</ul>
+<p><code>@PrepareForTest</code> 这个注解告诉 <code>PowerMock</code> 准备测试某些类，需要使用此注解定义的类通常是<strong>需要进行字节码操作的类</strong>，包括带有 <code>final</code>、<code>private</code>、<code>static</code> 或 <code>native方法</code> 的类。</p>
+<p>这个注解可以放在 <strong>测试类</strong> 或者 <strong>单独的测试方法</strong> 中。</p>
+<ul>
+<li>如果放在一个类上，这个测试类中的所有测试方法都将由 PowerMock处理</li>
+<li>如果要为单个方法重写此行为，只需在特定测试方法上放置 <code>@PrepareForTest</code> 注解。例如，如果您想在测试方法A中修改类X，但在测试方法B中希望X完好无损，那么这很有用。在这种情况下，您在方法B上放置@PrepareForTest，并从value()列表中排除类X</li>
+<li>有时你需要准备内部类来进行测试，这可以通过提供应该模拟到 <code>fullyQualifiedNames()</code> 列表的内部类的完全限定名来完成</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Target<span style="color:#f92672">(</span> <span style="color:#f92672">{</span> ElementType<span style="color:#f92672">.</span><span style="color:#a6e22e">TYPE</span><span style="color:#f92672">,</span> ElementType<span style="color:#f92672">.</span><span style="color:#a6e22e">METHOD</span> <span style="color:#f92672">})</span>
+<span style="color:#a6e22e">@Retention</span><span style="color:#f92672">(</span>RetentionPolicy<span style="color:#f92672">.</span><span style="color:#a6e22e">RUNTIME</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@Documented</span>
+<span style="color:#a6e22e">@Inherited</span>
+<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> PrepareForTest <span style="color:#f92672">{</span>
+    Class<span style="color:#f92672">&lt;?&gt;[]</span> value<span style="color:#f92672">()</span> <span style="color:#66d9ef">default</span> IndicateReloadClass<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">;</span>
+
+    String<span style="color:#f92672">[]</span> <span style="color:#a6e22e">fullyQualifiedNames</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">default</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
+    
+    ByteCodeFramework <span style="color:#a6e22e">byteCodeFramework</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">default</span> ByteCodeFramework<span style="color:#f92672">.</span><span style="color:#a6e22e">Javassist</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="访问内部状态">访问内部状态</h2>
+<ul>
+<li><code>Whitebox.setInternalState(..)</code> 设置一个实例或类的非公共成员</li>
+<li><code>Whitebox.getInternalState(..)</code> 得到的实例或类的非公共成员</li>
+<li><code>Whitebox.invokeMethod(..)</code> 调用实例或类的非公共方法</li>
+<li><code>Whitebox.invokeConstructor(..)</code> 调用私有构造函数创建类的实例</li>
+</ul>
+<blockquote>
+<p>以上这些都可以在不使用 <code>PowerMock</code> 的情况下实现，这只是普通的 Java反射</p>
+</blockquote>
+<h2 id="抑制不需要的行为">抑制不需要的行为</h2>
+<p>有时候需要 抑制某些 <strong>构造函数</strong>、<strong>方法</strong> 或 <strong>静态初始化器</strong> 的行为，以便单元测试你自己的代码。</p>
+<h3 id="抑制构造函数">抑制构造函数</h3>
+<p>假设我们要测试 <code>ExampleWithEvilParent</code> 类的 <code>getMessage()</code> 方法，看起来好像很简单。但是这个父类试图加载一个 dll文件，当你为这个 <code>ExampleWithEvilParent</code> 类运行一个单元测试时它将不会出现。使用 <code>PowerMock</code>，您可以禁止 <code>EvilParent</code> 的构造函数，以便您可以单元测试 <code>ExampleWithEvilParent</code> 类。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EvilParent</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">EvilParent</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+      	<span style="color:#75715e">// 试图加载一个 dll文件
+</span><span style="color:#75715e"></span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">loadLibrary</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;evil.dll&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Getter</span>
+<span style="color:#a6e22e">@AllArgsConstructor</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ExampleWithEvilParent</span> <span style="color:#66d9ef">extends</span> EvilParent <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String message<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>测试用例</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.junit.Test<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.junit.runner.RunWith<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.powermock.core.classloader.annotations.PrepareForTest<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.powermock.modules.junit4.PowerMockRunner<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import static</span> org.junit.Assert.assertEquals<span style="color:#f92672">;</span>
+<span style="color:#f92672">import static</span> org.powermock.api.support.membermodification.MemberModifier.constructor<span style="color:#f92672">;</span>
+<span style="color:#f92672">import static</span> org.powermock.api.support.membermodification.MemberModifier.suppress<span style="color:#f92672">;</span>
+
+<span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>PowerMockRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@PrepareForTest</span><span style="color:#f92672">(</span>ExampleWithEvilParent<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ExampleWithEvilParentTest</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testSuppressConstructorOfEvilParent</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 抑制构造函数
+</span><span style="color:#75715e"></span>        suppress<span style="color:#f92672">(</span>constructor<span style="color:#f92672">(</span>EvilParent<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">));</span>
+
+        <span style="color:#66d9ef">final</span> String message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;myMessage&#34;</span><span style="color:#f92672">;</span>
+        ExampleWithEvilParent tested <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ExampleWithEvilParent<span style="color:#f92672">(</span>message<span style="color:#f92672">);</span>
+        assertEquals<span style="color:#f92672">(</span>message<span style="color:#f92672">,</span> tested<span style="color:#f92672">.</span><span style="color:#a6e22e">getMessage</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>上面的例子在抑制超类构造函数和被测类时起作用。另一种抑制被测试类的构造函数，我们通过<code>Whitebox.newInstance</code> 方法实现。例如，如果你自己的代码在它的构造函数中做了一些事情，那么很难进行单元测试。这实例化该类而不调用构造函数。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Getter</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ExampleWithEvilConstructor</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String message<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ExampleWithEvilConstructor</span><span style="color:#f92672">(</span>String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">loadLibrary</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;evil.dll&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">message</span> <span style="color:#f92672">=</span> message<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>也可通过以下方式，<strong>创建类的实例而不调用构造方法</strong>：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ExampleWithEvilConstructor tested <span style="color:#f92672">=</span> Whitebox<span style="color:#f92672">.</span><span style="color:#a6e22e">newInstance</span><span style="color:#f92672">(</span>ExampleWithEvilConstructor<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</code></pre></div><h3 id="抑制私有方法">抑制私有方法</h3>
+<p>在某些情况下，需要 <strong>压制一个方法并使其返回一些默认值</strong>，因为它会阻止你对自己的类进行单元测试。看看下面的组装示例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@AllArgsConstructor</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ExampleWithEvilMethod</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String message<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getMessage</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+      	<span style="color:#75715e">// 调用了 getEvilMessage 方法
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> message <span style="color:#f92672">+</span> getEvilMessage<span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">private</span> String <span style="color:#a6e22e">getEvilMessage</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">loadLibrary</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;evil.dll&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;evil!&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>如果 <code>System.loadLibrary(&quot;evil.dll&quot;)</code> 在测试 <code>getMessage()</code> 方法时执行语句，则测试将失败。避免这种情况的一个简单方法是简单地抑制该 <code>getEvilMessage</code> 方法。你可以使用：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">suppress<span style="color:#f92672">(</span>method<span style="color:#f92672">(</span>ExampleWithEvilMethod<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;getEvilMessage&#34;</span><span style="color:#f92672">));</span>
+</code></pre></div><p>完整的测试如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.junit.Test<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.junit.runner.RunWith<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.powermock.core.classloader.annotations.PrepareForTest<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.powermock.modules.junit4.PowerMockRunner<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import static</span> org.junit.Assert.assertEquals<span style="color:#f92672">;</span>
+<span style="color:#f92672">import static</span> org.powermock.api.support.membermodification.MemberModifier.method<span style="color:#f92672">;</span>
+<span style="color:#f92672">import static</span> org.powermock.api.support.membermodification.MemberModifier.suppress<span style="color:#f92672">;</span>
+
+<span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>PowerMockRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@PrepareForTest</span><span style="color:#f92672">(</span>ExampleWithEvilMethod<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ExampleWithEvilMethodTest</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testSuppressMethod</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 抑制私有方法
+</span><span style="color:#75715e"></span>        suppress<span style="color:#f92672">(</span>method<span style="color:#f92672">(</span>ExampleWithEvilMethod<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;getEvilMessage&#34;</span><span style="color:#f92672">));</span>
+
+        <span style="color:#66d9ef">final</span> String message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;myMessage&#34;</span><span style="color:#f92672">;</span>
+        ExampleWithEvilMethod tested <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ExampleWithEvilMethod<span style="color:#f92672">(</span>message<span style="color:#f92672">);</span>
+      	<span style="color:#75715e">// getEvilMessage 会返回 null
+</span><span style="color:#75715e"></span>        assertEquals<span style="color:#f92672">(</span>message <span style="color:#f92672">+</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> tested<span style="color:#f92672">.</span><span style="color:#a6e22e">getMessage</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="抑制静态初代码块">抑制静态初代码块</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> xyz.kail.demo.mock.power<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> lombok.AllArgsConstructor<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> lombok.Getter<span style="color:#f92672">;</span>
+
+<span style="color:#a6e22e">@Getter</span>
+<span style="color:#a6e22e">@AllArgsConstructor</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ExampleWithEvilStaticInitializer</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">static</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">loadLibrary</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;evil.dll&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String message<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>直接贴出完整测试：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.junit.Test<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.junit.runner.RunWith<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.powermock.core.classloader.annotations.SuppressStaticInitializationFor<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.powermock.modules.junit4.PowerMockRunner<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import static</span> org.junit.Assert.assertEquals<span style="color:#f92672">;</span>
+
+<span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>PowerMockRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ExampleWithEvilStaticInitializerTest</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#a6e22e">@SuppressStaticInitializationFor</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;xyz.kail.demo.mock.power.ExampleWithEvilStaticInitializer&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testSuppressStaticInitializer</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">final</span> String message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;myMessage&#34;</span><span style="color:#f92672">;</span>
+        ExampleWithEvilStaticInitializer tested <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ExampleWithEvilStaticInitializer<span style="color:#f92672">(</span>message<span style="color:#f92672">);</span>
+        assertEquals<span style="color:#f92672">(</span>message<span style="color:#f92672">,</span> tested<span style="color:#f92672">.</span><span style="color:#a6e22e">getMessage</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="抑制字段">抑制字段</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Getter</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyClass</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">private</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> myObject <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;();</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div><p>抑制</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">suppress<span style="color:#f92672">(</span>field<span style="color:#f92672">(</span>MyClass<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;myObject&#34;</span><span style="color:#f92672">));</span>
+</code></pre></div><blockquote>
+<p>在 <code>powermock</code> + <code>mockit</code> 中，抑制语法如下：</p>
+<pre><code>PowerMockito.suppress(PowerMockito.method(类.class,&quot;方法名&quot;));
+</code></pre></blockquote>
+<h2 id="mockito-扩展功能">Mockito 扩展功能</h2>
+<h3 id="mock-public-静态方法">Mock public 静态方法</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StaticMethodCase</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getSomeWorld</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> getHello<span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; World&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * public 静态方法
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> String <span style="color:#a6e22e">getHello</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Hello&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>测试用例</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.junit.Test<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.junit.runner.RunWith<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.powermock.api.mockito.PowerMockito<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.powermock.core.classloader.annotations.PrepareForTest<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.powermock.modules.junit4.PowerMockRunner<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import static</span> org.junit.Assert.assertEquals<span style="color:#f92672">;</span>
+
+<span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>PowerMockRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@PrepareForTest</span><span style="color:#f92672">(</span>StaticMethodCase<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StaticMethodCaseTest</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testGetSomeWorld</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// ❤ 如果没有 Mock 静态方法的行为，静态方法会返回 null ❤
+</span><span style="color:#75715e"></span>        PowerMockito<span style="color:#f92672">.</span><span style="color:#a6e22e">mockStatic</span><span style="color:#f92672">(</span>StaticMethodCase<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+
+        <span style="color:#75715e">// Mock 静态方法的行为
+</span><span style="color:#75715e"></span>        PowerMockito<span style="color:#f92672">.</span><span style="color:#a6e22e">when</span><span style="color:#f92672">(</span>StaticMethodCase<span style="color:#f92672">.</span><span style="color:#a6e22e">getHello</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">thenReturn</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;你好&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#75715e">// Mockito 与 PowerMockito 效果一样
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// Mockito.when(StaticMethodCase.getHello()).thenReturn(&#34;你好&#34;);
+</span><span style="color:#75715e"></span>
+        assertEquals<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;你好 World&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> StaticMethodCase<span style="color:#f92672">().</span><span style="color:#a6e22e">getSomeWorld</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="mock-final方法">Mock final方法</h3>
+<pre><code>public class FinalMethodCase {
+
+    public String getSomeWorld() {
+        return getHello() + &quot; World&quot;;
+    }
+
+    /**
+     * final 方法
+     */
+    public final String getHello() {
+        System.out.println(&quot;getHello&quot;);
+        return &quot;Hello&quot;;
+    }
+}
+</code></pre><p>使用 Mockito 会报一下错误：</p>
+<pre><code>org.mockito.exceptions.misusing.MissingMethodInvocationException: 
+when() requires an argument which has to be 'a method call on a mock'.
+For example:
+    when(mock.getArticles()).thenReturn(articles);
+
+Also, this error might show up because:
+1. you stub either of: final/private/equals()/hashCode() methods.
+   Those methods *cannot* be stubbed/verified.
+   Mocking methods declared on non-public parent classes is not supported.
+2. inside when() you don't call method on mock but on some other object.
+</code></pre><p>使用 PowerMock 可以对 final 方法进行 Mock</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+<span style="color:#f92672">import</span> org.junit.Test<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.junit.runner.RunWith<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.powermock.api.mockito.PowerMockito<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.powermock.core.classloader.annotations.PrepareForTest<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.powermock.modules.junit4.PowerMockRunner<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import static</span> org.junit.Assert.assertEquals<span style="color:#f92672">;</span>
+
+<span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>PowerMockRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FinalMethodCaseTest</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#a6e22e">@PrepareForTest</span><span style="color:#f92672">(</span>FinalMethodCase<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testGetSomeWorld</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+
+        FinalMethodCase mock <span style="color:#f92672">=</span> PowerMockito<span style="color:#f92672">.</span><span style="color:#a6e22e">mock</span><span style="color:#f92672">(</span>FinalMethodCase<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+
+        <span style="color:#75715e">// 当调用 getSomeWorld 方法的时候，执行真实的方法
+</span><span style="color:#75715e"></span>        PowerMockito<span style="color:#f92672">.</span><span style="color:#a6e22e">when</span><span style="color:#f92672">(</span>mock<span style="color:#f92672">.</span><span style="color:#a6e22e">getSomeWorld</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">thenCallRealMethod</span><span style="color:#f92672">();</span>
+        <span style="color:#75715e">// Mock final方法的行为
+</span><span style="color:#75715e"></span>        PowerMockito<span style="color:#f92672">.</span><span style="color:#a6e22e">when</span><span style="color:#f92672">(</span>mock<span style="color:#f92672">.</span><span style="color:#a6e22e">getHello</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">thenReturn</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;你好&#34;</span><span style="color:#f92672">);</span>
+
+        assertEquals<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;你好 World&#34;</span><span style="color:#f92672">,</span> mock<span style="color:#f92672">.</span><span style="color:#a6e22e">getSomeWorld</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="mock-私有方法">Mock 私有方法</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PrivateMethodCase</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getSomeWorld</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> getHello<span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; World&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * final 方法
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">private</span> String <span style="color:#a6e22e">getHello</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Hello&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>测试用例</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>PowerMockRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PrivateMethodCaseTest</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#a6e22e">@PrepareForTest</span><span style="color:#f92672">(</span>PrivateMethodCase<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testGetSomeWorld</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+
+        PrivateMethodCase mock <span style="color:#f92672">=</span> PowerMockito<span style="color:#f92672">.</span><span style="color:#a6e22e">mock</span><span style="color:#f92672">(</span>PrivateMethodCase<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+
+        <span style="color:#75715e">// 当调用 getSomeWorld 方法的时候，执行真实的方法
+</span><span style="color:#75715e"></span>        PowerMockito<span style="color:#f92672">.</span><span style="color:#a6e22e">when</span><span style="color:#f92672">(</span>mock<span style="color:#f92672">.</span><span style="color:#a6e22e">getSomeWorld</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">thenCallRealMethod</span><span style="color:#f92672">();</span>
+        <span style="color:#75715e">// ❤ Mock 静态方法的行为，Mockito 没有提供这种方式 ❤
+</span><span style="color:#75715e"></span>        PowerMockito<span style="color:#f92672">.</span><span style="color:#a6e22e">when</span><span style="color:#f92672">(</span>mock<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;getHello&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">thenReturn</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;你好&#34;</span><span style="color:#f92672">);</span>
+
+        assertEquals<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;你好 World&#34;</span><span style="color:#f92672">,</span> mock<span style="color:#f92672">.</span><span style="color:#a6e22e">getSomeWorld</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="read-more">Read More</h2>
+<ul>
+<li>
+  <a href="https://blog.csdn.net/weixin_39471249/article/details/80398212">Powermock学习之基本用法</a></li>
+<li>
+  <a href="https://blog.csdn.net/devil_wangyu/article/details/78890261">Powermock私有方法</a></li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/hello-world-example/Mock/edit/master/HuGo/content/docs/powermock/Introduction.md" target="_blank" rel="noopener">
+      <img src="/Mock/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+<script>
+var images = document.getElementsByTagName("img")
+console.info(images.length)
+for(var i=0; i<images.length; i++){
+  var image = images[i]
+  var src = image.getAttribute("src");
+  if(src.startsWith("-images")){
+    image.setAttribute("src", "../" + src)
+  }
+}
+</script>
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#powermock-简介">PowerMock 简介</a>
+      <ul>
+        <li><a href="#访问内部状态">访问内部状态</a></li>
+        <li><a href="#抑制不需要的行为">抑制不需要的行为</a>
+          <ul>
+            <li><a href="#抑制构造函数">抑制构造函数</a></li>
+            <li><a href="#抑制私有方法">抑制私有方法</a></li>
+            <li><a href="#抑制静态初代码块">抑制静态初代码块</a></li>
+            <li><a href="#抑制字段">抑制字段</a></li>
+          </ul>
+        </li>
+        <li><a href="#mockito-扩展功能">Mockito 扩展功能</a>
+          <ul>
+            <li><a href="#mock-public-静态方法">Mock public 静态方法</a></li>
+            <li><a href="#mock-final方法">Mock final方法</a></li>
+            <li><a href="#mock-私有方法">Mock 私有方法</a></li>
+          </ul>
+        </li>
+        <li><a href="#read-more">Read More</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://hello-world-example.github.io/Mock/_sidebar/</loc>
+  </url>
+  
+  <url>
+    <loc>https://hello-world-example.github.io/Mock/docs/junit4/Rule/</loc>
+  </url>
+  
+  <url>
+    <loc>https://hello-world-example.github.io/Mock/docs/junit4/RunWith/</loc>
+  </url>
+  
+  <url>
+    <loc>https://hello-world-example.github.io/Mock/docs/Mock-Introduction/</loc>
+  </url>
+  
+  <url>
+    <loc>https://hello-world-example.github.io/Mock/docs/mockito/in-action/DAO-Simple/</loc>
+  </url>
+  
+  <url>
+    <loc>https://hello-world-example.github.io/Mock/docs/mockito/Java-Doc/</loc>
+  </url>
+  
+  <url>
+    <loc>https://hello-world-example.github.io/Mock/docs/mockito/Mockito-Tutorial/</loc>
+  </url>
+  
+  <url>
+    <loc>https://hello-world-example.github.io/Mock/docs/powermock/Introduction/</loc>
+  </url>
+  
+  <url>
+    <loc>https://hello-world-example.github.io/Mock/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>https://hello-world-example.github.io/Mock/docs/</loc>
+  </url>
+  
+  <url>
+    <loc>https://hello-world-example.github.io/Mock/</loc>
+  </url>
+  
+  <url>
+    <loc>https://hello-world-example.github.io/Mock/tags/</loc>
+  </url>
+  
+</urlset>

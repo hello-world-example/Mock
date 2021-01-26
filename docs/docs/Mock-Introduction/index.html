@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Mock 简介 Mock 测试是单元测试的重要方法之一
+什么是 Mock 测试 Mock 测试就是在测试过程中，对于某些不容易构造（如 HttpServletRequest 必须在Servlet 容器中才能构造出来）或者不容易获取比较复杂的对象（如 JDBC 中的 ResultSet 对象），用一个虚拟的对象（Mock 对象）来创建以便测试的测试方法。
+Mock 最大的功能是帮你把单元测试的耦合分解开，如果你的代码对另一个类或者接口有依赖，它能够帮你模拟这些依赖，并帮你验证所调用的依赖的行为。
+比如一段代码有这样的依赖：
+ 当我们需要测试A类的时候，如果没有 Mock，则我们需要把整个依赖树都构建出来，而使用 Mock 的话就可以将结构分解开，像下面这样：
+ Mock 对象使用范畴  真实对象具有不可确定的行为，产生不可预测的效果，（如：股票行情，天气预报） 真实对象很难被创建的 真实对象的某些行为很难被触发 真实对象实际上还不存在的（和其他开发小组或者和新的硬件打交道） &hellip;  "><meta property="og:title" content="" />
+<meta property="og:description" content="Mock 简介 Mock 测试是单元测试的重要方法之一
+什么是 Mock 测试 Mock 测试就是在测试过程中，对于某些不容易构造（如 HttpServletRequest 必须在Servlet 容器中才能构造出来）或者不容易获取比较复杂的对象（如 JDBC 中的 ResultSet 对象），用一个虚拟的对象（Mock 对象）来创建以便测试的测试方法。
+Mock 最大的功能是帮你把单元测试的耦合分解开，如果你的代码对另一个类或者接口有依赖，它能够帮你模拟这些依赖，并帮你验证所调用的依赖的行为。
+比如一段代码有这样的依赖：
+ 当我们需要测试A类的时候，如果没有 Mock，则我们需要把整个依赖树都构建出来，而使用 Mock 的话就可以将结构分解开，像下面这样：
+ Mock 对象使用范畴  真实对象具有不可确定的行为，产生不可预测的效果，（如：股票行情，天气预报） 真实对象很难被创建的 真实对象的某些行为很难被触发 真实对象实际上还不存在的（和其他开发小组或者和新的硬件打交道） &hellip;  " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hello-world-example.github.io/Mock/docs/Mock-Introduction/" />
+
+<title>Mock Introduction | Mock</title>
+<link rel="icon" href="/Mock/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/Mock/book.min.d436f463c9471cfab26a8b71cd2f50b6abf5225806391453da4ca111d1834fef.css" integrity="sha256-1Db0Y8lHHPqyaotxzS9Qtqv1IlgGORRT2kyhEdGDT&#43;8=">
+
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/Mock"><span>Mock</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><strong>JUnit4</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/junit4/RunWith/">@RunWith</a></li>
+<li>
+  <a href="/Mock/docs/junit4/Rule/">@Rule</a></li>
+</ul>
+</li>
+<li>
+  <a href="/Mock/docs/Mock-Introduction/"class=active>Mock 简介</a></li>
+<li><strong>Mockito</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/mockito/Java-Doc/">[译] Java Doc</a></li>
+<li>
+  <a href="/Mock/docs/mockito/Mockito-Tutorial/">[转] Mockito 教程</a></li>
+<li>
+  <a href="/Mock/docs/mockito/in-action/DAO-Simple/">Mock 持久层依赖</a></li>
+</ul>
+</li>
+<li><strong>Power Mock</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/powermock/Introduction/">Power Mock 介绍</a></li>
+</ul>
+</li>
+<li>
+  <a href="//hello-world-example.github.io/Spring-Boot/#/unit-test/index">Spring Boot Test</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/Mock/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Mock Introduction</strong>
+
+  <label for="toc-control">
+    <img src="/Mock/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#mock-简介">Mock 简介</a>
+      <ul>
+        <li><a href="#什么是-mock-测试">什么是 Mock 测试</a></li>
+        <li><a href="#mock-对象使用范畴">Mock 对象使用范畴</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="mock-简介">Mock 简介</h1>
+<p>Mock 测试是单元测试的重要方法之一</p>
+<h2 id="什么是-mock-测试">什么是 Mock 测试</h2>
+<p>Mock 测试就是在测试过程中，对于某些不容易构造（如 HttpServletRequest 必须在Servlet 容器中才能构造出来）或者不容易获取比较复杂的对象（如 JDBC 中的 ResultSet 对象），用一个虚拟的对象（Mock 对象）来创建以便测试的测试方法。</p>
+<p>Mock 最大的功能是帮你把单元测试的耦合分解开，如果你的代码对另一个类或者接口有依赖，它能够帮你模拟这些依赖，并帮你验证所调用的依赖的行为。</p>
+<p>比如一段代码有这样的依赖：</p>
+<p>
+  <img src="-images/Mock-Introduction-01.jpg" alt="" /></p>
+<p>当我们需要测试A类的时候，如果没有 Mock，则我们需要把整个依赖树都构建出来，而使用 Mock 的话就可以将结构分解开，像下面这样：</p>
+<p>
+  <img src="-images/Mock-Introduction-02.jpg" alt="" /></p>
+<h2 id="mock-对象使用范畴">Mock 对象使用范畴</h2>
+<ul>
+<li>真实对象具有不可确定的行为，产生不可预测的效果，（如：股票行情，天气预报）</li>
+<li>真实对象很难被创建的</li>
+<li>真实对象的某些行为很难被触发</li>
+<li>真实对象实际上还不存在的（和其他开发小组或者和新的硬件打交道）</li>
+<li>&hellip;</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/hello-world-example/Mock/edit/master/HuGo/content/docs/Mock-Introduction.md" target="_blank" rel="noopener">
+      <img src="/Mock/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+<script>
+var images = document.getElementsByTagName("img")
+console.info(images.length)
+for(var i=0; i<images.length; i++){
+  var image = images[i]
+  var src = image.getAttribute("src");
+  if(src.startsWith("-images")){
+    image.setAttribute("src", "../" + src)
+  }
+}
+</script>
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#mock-简介">Mock 简介</a>
+      <ul>
+        <li><a href="#什么是-mock-测试">什么是 Mock 测试</a></li>
+        <li><a href="#mock-对象使用范畴">Mock 对象使用范畴</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

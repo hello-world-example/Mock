@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="@Rule 注解 一个 JUnit Rule 就是一个实现了 TestRule 的类，这些类的作用类似于 @Before、@After，是用来在每个测试方法的执行前后执行一些代码的一个方法。 @Before、@After 只能作用于一个类，如果同一个 setup 需要在两个类里面同时使用，那么你就要在两个测试类里面定义相同的@Before方法，然后里面写相同的代码，这就造成了代码重复。此外，JUnit Rule还能做一些 @Before、@After这些注解做不到的事情，那就是他们可以动态的获取将要运行的测试类、测试方法的信息。
+除了 @Rule 外， @ClassRule 是类级别的，在执行一个测试类的时候只会调用一次被注解的 Rule。
+内建实现  TemporaryFolder：测试可以创建文件与目录并且会在测试运行结束后将其删除。这对于那些与文件系统打交道且独立运行的测试来说很有用。 ExternalResource：这是一种资源使用模式，它会提前建立好资源并且会在测试结束后将其销毁。这对于那些使用socket、嵌入式服务器等资源的测试来说很有用。 ErrorCollector：可以让测试在失败后继续运行并在测试结束时报告所有错误。这对于那些需要验证大量独立条件的测试来说很有用（尽管这本身可能是个“test smell”）。 ExpectedException：可以在测试中指定期望的异常类型与消息。 Timeout：为类中的所有测试应用相同的超时时间。  使用示例 public class RuleTestDemo { // 使用Timeout这个Rule  @Rule public Timeout timeout = new Timeout(1000); @Test public void testMethod1() throws Exception { Thread.sleep(1001); } @Test public void testMethod2() throws Exception { Thread.sleep(999); } } 自定义示例 public class MethodNameRule implements TestRule { public Statement apply(final Statement base, final Description description) { return new Statement() { @Override public void evaluate() throws Throwable { //在测试方法运行之前做一些事情，在base."><meta property="og:title" content="" />
+<meta property="og:description" content="@Rule 注解 一个 JUnit Rule 就是一个实现了 TestRule 的类，这些类的作用类似于 @Before、@After，是用来在每个测试方法的执行前后执行一些代码的一个方法。 @Before、@After 只能作用于一个类，如果同一个 setup 需要在两个类里面同时使用，那么你就要在两个测试类里面定义相同的@Before方法，然后里面写相同的代码，这就造成了代码重复。此外，JUnit Rule还能做一些 @Before、@After这些注解做不到的事情，那就是他们可以动态的获取将要运行的测试类、测试方法的信息。
+除了 @Rule 外， @ClassRule 是类级别的，在执行一个测试类的时候只会调用一次被注解的 Rule。
+内建实现  TemporaryFolder：测试可以创建文件与目录并且会在测试运行结束后将其删除。这对于那些与文件系统打交道且独立运行的测试来说很有用。 ExternalResource：这是一种资源使用模式，它会提前建立好资源并且会在测试结束后将其销毁。这对于那些使用socket、嵌入式服务器等资源的测试来说很有用。 ErrorCollector：可以让测试在失败后继续运行并在测试结束时报告所有错误。这对于那些需要验证大量独立条件的测试来说很有用（尽管这本身可能是个“test smell”）。 ExpectedException：可以在测试中指定期望的异常类型与消息。 Timeout：为类中的所有测试应用相同的超时时间。  使用示例 public class RuleTestDemo { // 使用Timeout这个Rule  @Rule public Timeout timeout = new Timeout(1000); @Test public void testMethod1() throws Exception { Thread.sleep(1001); } @Test public void testMethod2() throws Exception { Thread.sleep(999); } } 自定义示例 public class MethodNameRule implements TestRule { public Statement apply(final Statement base, final Description description) { return new Statement() { @Override public void evaluate() throws Throwable { //在测试方法运行之前做一些事情，在base." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hello-world-example.github.io/Mock/docs/junit4/Rule/" />
+
+<title>@ Rule | Mock</title>
+<link rel="icon" href="/Mock/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/Mock/book.min.d436f463c9471cfab26a8b71cd2f50b6abf5225806391453da4ca111d1834fef.css" integrity="sha256-1Db0Y8lHHPqyaotxzS9Qtqv1IlgGORRT2kyhEdGDT&#43;8=">
+
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/Mock"><span>Mock</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><strong>JUnit4</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/junit4/RunWith/">@RunWith</a></li>
+<li>
+  <a href="/Mock/docs/junit4/Rule/"class=active>@Rule</a></li>
+</ul>
+</li>
+<li>
+  <a href="/Mock/docs/Mock-Introduction/">Mock 简介</a></li>
+<li><strong>Mockito</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/mockito/Java-Doc/">[译] Java Doc</a></li>
+<li>
+  <a href="/Mock/docs/mockito/Mockito-Tutorial/">[转] Mockito 教程</a></li>
+<li>
+  <a href="/Mock/docs/mockito/in-action/DAO-Simple/">Mock 持久层依赖</a></li>
+</ul>
+</li>
+<li><strong>Power Mock</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/powermock/Introduction/">Power Mock 介绍</a></li>
+</ul>
+</li>
+<li>
+  <a href="//hello-world-example.github.io/Spring-Boot/#/unit-test/index">Spring Boot Test</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/Mock/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>@ Rule</strong>
+
+  <label for="toc-control">
+    <img src="/Mock/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#rule-注解">@Rule 注解</a>
+      <ul>
+        <li><a href="#内建实现">内建实现</a></li>
+        <li><a href="#使用示例">使用示例</a></li>
+        <li><a href="#自定义示例">自定义示例</a></li>
+        <li><a href="#read-more">Read More</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="rule-注解">@Rule 注解</h1>
+<p>一个 JUnit Rule 就是一个实现了 <code>TestRule</code> 的类，这些类的作用类似于 <code>@Before</code>、<code>@After</code>，是用来<strong>在每个测试方法的执行前后执行一些代码</strong>的一个方法。 @Before、@After 只能作用于一个类，如果同一个 setup 需要在两个类里面同时使用，那么你就要在两个测试类里面定义相同的@Before方法，然后里面写相同的代码，这就造成了代码重复。此外，JUnit Rule还能做一些 @Before、@After这些注解做不到的事情，那就是他们可以动态的获取将要运行的测试类、测试方法的信息。</p>
+<p>除了 <code>@Rule</code> 外， <code>@ClassRule</code> 是类级别的，在执行一个测试类的时候只会调用一次被注解的 Rule。</p>
+<h2 id="内建实现">内建实现</h2>
+<ul>
+<li>TemporaryFolder：测试可以创建文件与目录并且会在测试运行结束后将其删除。这对于那些与文件系统打交道且独立运行的测试来说很有用。</li>
+<li>ExternalResource：这是一种资源使用模式，它会提前建立好资源并且会在测试结束后将其销毁。这对于那些使用socket、嵌入式服务器等资源的测试来说很有用。</li>
+<li>ErrorCollector：可以让测试在失败后继续运行并在测试结束时报告所有错误。这对于那些需要验证大量独立条件的测试来说很有用（尽管这本身可能是个“test smell”）。</li>
+<li>ExpectedException：可以在测试中指定期望的异常类型与消息。</li>
+<li>Timeout：为类中的所有测试应用相同的超时时间。</li>
+</ul>
+<h2 id="使用示例">使用示例</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RuleTestDemo</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#75715e">// 使用Timeout这个Rule
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">@Rule</span>
+    <span style="color:#66d9ef">public</span> Timeout timeout <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Timeout<span style="color:#f92672">(</span>1000<span style="color:#f92672">);</span>  
+
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testMethod1</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>1001<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testMethod2</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>999<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="自定义示例">自定义示例</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MethodNameRule</span> <span style="color:#66d9ef">implements</span> TestRule <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">public</span> Statement <span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> Statement base<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> Description description<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Statement<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#a6e22e">@Override</span>
+            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">evaluate</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
+                <span style="color:#75715e">//在测试方法运行之前做一些事情，在base.evaluate()之前
+</span><span style="color:#75715e"></span>                String className <span style="color:#f92672">=</span> description<span style="color:#f92672">.</span><span style="color:#a6e22e">getClassName</span><span style="color:#f92672">();</span>
+                String methodName <span style="color:#f92672">=</span> description<span style="color:#f92672">.</span><span style="color:#a6e22e">getMethodName</span><span style="color:#f92672">();</span>
+
+                base<span style="color:#f92672">.</span><span style="color:#a6e22e">evaluate</span><span style="color:#f92672">();</span>  <span style="color:#75715e">//运行测试方法
+</span><span style="color:#75715e"></span>
+                <span style="color:#75715e">//在测试方法运行之后做一些事情，在base.evaluate()之后
+</span><span style="color:#75715e"></span>                System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Class name:&#34;</span><span style="color:#f92672">+</span>className<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;, method name: &#34;</span><span style="color:#f92672">+</span>methodName<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">};</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="read-more">Read More</h2>
+<ul>
+<li>
+  <a href="http://www.testclass.net/junit/rule">JUnit 注解之 Rule</a></li>
+<li>
+  <a href="https://haibin369.iteye.com/blog/2088541">利用 Rule 扩展 JUnit</a></li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/hello-world-example/Mock/edit/master/HuGo/content/docs/junit4/@Rule.md" target="_blank" rel="noopener">
+      <img src="/Mock/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+<script>
+var images = document.getElementsByTagName("img")
+console.info(images.length)
+for(var i=0; i<images.length; i++){
+  var image = images[i]
+  var src = image.getAttribute("src");
+  if(src.startsWith("-images")){
+    image.setAttribute("src", "../" + src)
+  }
+}
+</script>
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#rule-注解">@Rule 注解</a>
+      <ul>
+        <li><a href="#内建实现">内建实现</a></li>
+        <li><a href="#使用示例">使用示例</a></li>
+        <li><a href="#自定义示例">自定义示例</a></li>
+        <li><a href="#read-more">Read More</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

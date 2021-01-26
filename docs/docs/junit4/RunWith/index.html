@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="@RunWith 注解  When a class is annotated with @RunWith or extends a class annotated with @RunWith, JUnit will invoke the class it references to run the tests in that class instead of the runner built into JUnit.
+ JavaDoc for @RunWith http://junit.org/javadoc/latest/org/junit/runner/RunWith.html The default runner is BlockJUnit4ClassRunner which supersedes the older JUnit4ClassRunner Annotating a class with @RunWith(JUnit4.class) will always invoke the default JUnit 4 runner in the current version of JUnit, this class aliases the current default JUnit 4 class runner."><meta property="og:title" content="" />
+<meta property="og:description" content="@RunWith 注解  When a class is annotated with @RunWith or extends a class annotated with @RunWith, JUnit will invoke the class it references to run the tests in that class instead of the runner built into JUnit.
+ JavaDoc for @RunWith http://junit.org/javadoc/latest/org/junit/runner/RunWith.html The default runner is BlockJUnit4ClassRunner which supersedes the older JUnit4ClassRunner Annotating a class with @RunWith(JUnit4.class) will always invoke the default JUnit 4 runner in the current version of JUnit, this class aliases the current default JUnit 4 class runner." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hello-world-example.github.io/Mock/docs/junit4/RunWith/" />
+
+<title>@ Run With | Mock</title>
+<link rel="icon" href="/Mock/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/Mock/book.min.d436f463c9471cfab26a8b71cd2f50b6abf5225806391453da4ca111d1834fef.css" integrity="sha256-1Db0Y8lHHPqyaotxzS9Qtqv1IlgGORRT2kyhEdGDT&#43;8=">
+
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/Mock"><span>Mock</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><strong>JUnit4</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/junit4/RunWith/"class=active>@RunWith</a></li>
+<li>
+  <a href="/Mock/docs/junit4/Rule/">@Rule</a></li>
+</ul>
+</li>
+<li>
+  <a href="/Mock/docs/Mock-Introduction/">Mock 简介</a></li>
+<li><strong>Mockito</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/mockito/Java-Doc/">[译] Java Doc</a></li>
+<li>
+  <a href="/Mock/docs/mockito/Mockito-Tutorial/">[转] Mockito 教程</a></li>
+<li>
+  <a href="/Mock/docs/mockito/in-action/DAO-Simple/">Mock 持久层依赖</a></li>
+</ul>
+</li>
+<li><strong>Power Mock</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/powermock/Introduction/">Power Mock 介绍</a></li>
+</ul>
+</li>
+<li>
+  <a href="//hello-world-example.github.io/Spring-Boot/#/unit-test/index">Spring Boot Test</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/Mock/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>@ Run With</strong>
+
+  <label for="toc-control">
+    <img src="/Mock/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#runwith-注解">@RunWith 注解</a>
+      <ul>
+        <li><a href="#runner-抽象类">Runner 抽象类</a></li>
+        <li><a href="#常见实现">常见实现</a>
+          <ul>
+            <li><a href="#runwithjunit4class">@RunWith(JUnit4.<strong>class</strong>)</a></li>
+            <li><a href="#runwithmockitojunitrunnerclass">@RunWith(MockitoJUnitRunner.<strong>class</strong>)</a></li>
+            <li><a href="#runwithspringrunnerclass">@RunWith(SpringRunner.<strong>class</strong>)</a></li>
+          </ul>
+        </li>
+        <li><a href="#内建-runner">内建 Runner</a></li>
+        <li><a href="#自定义-runner">自定义 Runner</a>
+          <ul>
+            <li><a href="#myrunner">MyRunner</a></li>
+            <li><a href="#myunittest">MyUnitTest</a></li>
+            <li><a href="#输出">输出</a></li>
+          </ul>
+        </li>
+        <li><a href="#read-more">Read More</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="runwith-注解">@RunWith 注解</h1>
+<blockquote>
+<p>When a class is annotated with <code>@RunWith</code> or extends a class annotated with <code>@RunWith</code>, JUnit will invoke the class it references to run the tests in that class instead of the runner built into JUnit.</p>
+<ul>
+<li>JavaDoc for @RunWith <a href="http://junit.org/javadoc/latest/org/junit/runner/RunWith.html">http://junit.org/javadoc/latest/org/junit/runner/RunWith.html</a></li>
+<li>The default runner is <code>BlockJUnit4ClassRunner</code> which supersedes the older <code>JUnit4ClassRunner</code></li>
+<li>Annotating a class with <code>@RunWith(JUnit4.class)</code> will always invoke the default JUnit 4 runner in the current version of JUnit, this class aliases the current default JUnit 4 class runner.</li>
+</ul>
+</blockquote>
+<h2 id="runner-抽象类">Runner 抽象类</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> org.junit.runner<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> org.junit.runner.notification.RunNotifier<span style="color:#f92672">;</span>
+
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 创建自定义 Runner 时，除了实现抽象方法之外，
+</span><span style="color:#75715e"> * 还必须提供一个构造函数，该构造函数将会接收到被测试类。
+</span><span style="color:#75715e"> * 
+</span><span style="color:#75715e"> * @see org.junit.runner.Description
+</span><span style="color:#75715e"> * @see org.junit.runner.RunWith
+</span><span style="color:#75715e"> * @since 4.0
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Runner</span> <span style="color:#66d9ef">implements</span> Describable <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> Description <span style="color:#a6e22e">getDescription</span><span style="color:#f92672">();</span>
+
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 单元测试 开始、结束、失败 的时候会调用该方法
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>RunNotifier notifier<span style="color:#f92672">);</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">testCount</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> getDescription<span style="color:#f92672">().</span><span style="color:#a6e22e">testCount</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="常见实现">常见实现</h2>
+<h3 id="runwithjunit4class">@RunWith(JUnit4.<strong>class</strong>)</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * @since 4.5
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JUnit4</span> <span style="color:#66d9ef">extends</span> BlockJUnit4ClassRunner <span style="color:#f92672">{</span>
+ 
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">JUnit4</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;?&gt;</span> klass<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> InitializationError <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>klass<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="runwithmockitojunitrunnerclass">@RunWith(MockitoJUnitRunner.<strong>class</strong>)</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MockitoJUnitRunner</span> <span style="color:#66d9ef">extends</span> Runner <span style="color:#66d9ef">implements</span> Filterable <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> RunnerImpl runner<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">MockitoJUnitRunner</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;?&gt;</span> klass<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> InvocationTargetException <span style="color:#f92672">{</span>
+        runner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RunnerFactory<span style="color:#f92672">().</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span>klass<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> RunNotifier notifier<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>           
+        runner<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>notifier<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> Description <span style="color:#a6e22e">getDescription</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> runner<span style="color:#f92672">.</span><span style="color:#a6e22e">getDescription</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">filter</span><span style="color:#f92672">(</span>Filter filter<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> NoTestsRemainException <span style="color:#f92672">{</span>
+        <span style="color:#75715e">//filter is required because without it UnrootedTests show up in Eclipse
+</span><span style="color:#75715e"></span>      runner<span style="color:#f92672">.</span><span style="color:#a6e22e">filter</span><span style="color:#f92672">(</span>filter<span style="color:#f92672">);</span>
+   <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="runwithspringrunnerclass">@RunWith(SpringRunner.<strong>class</strong>)</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 注意:要求 JUnit 4.12+
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * @since 4.3
+</span><span style="color:#75715e"> * @see SpringJUnit4ClassRunner
+</span><span style="color:#75715e"> * @see org.springframework.test.context.junit4.rules.SpringClassRule
+</span><span style="color:#75715e"> * @see org.springframework.test.context.junit4.rules.SpringMethodRule
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SpringRunner</span> <span style="color:#66d9ef">extends</span> SpringJUnit4ClassRunner <span style="color:#f92672">{</span>
+
+	<span style="color:#75715e">/**
+</span><span style="color:#75715e">	 * 初始化 org.springframework.test.context.TestContextManager
+</span><span style="color:#75715e">	 */</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">SpringRunner</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;?&gt;</span> clazz<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> InitializationError <span style="color:#f92672">{</span>
+		<span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>clazz<span style="color:#f92672">);</span>
+	<span style="color:#f92672">}</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="内建-runner">内建 Runner</h2>
+<ul>
+<li><code>@RunWith(Suite.class)</code> 把多个相关的测试类看做一个测试套件一起测试。配合 <code>@Suite.SuiteClasses({ TestA.class, TestB.class})</code> 一起使用</li>
+<li><code>@RunWith(Parameterized.class)</code> 使用多个参数组合多次执行同一个测试用例</li>
+<li><code>@RunWith(Categories.class)</code> 执行一个“类别”。和Suite类似，只是Suite是执行指定类中的所有用例，而Categories执行的范围更小</li>
+<li><code>@RunWith(Theories.class)</code> 提供一组参数的排列组合值作为待测方法的输入参数</li>
+</ul>
+<h2 id="自定义-runner">自定义 Runner</h2>
+<h3 id="myrunner">MyRunner</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyRunner</span> <span style="color:#66d9ef">extends</span> BlockJUnit4ClassRunner <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">MyRunner</span><span style="color:#f92672">(</span>Class unitTestClass<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> InitializationError <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>unitTestClass<span style="color:#f92672">);</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;MyRunner:&#34;</span> <span style="color:#f92672">+</span> unitTestClass<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">protected</span> Statement <span style="color:#a6e22e">withBefores</span><span style="color:#f92672">(</span>FrameworkMethod method<span style="color:#f92672">,</span> Object target<span style="color:#f92672">,</span> Statement statement<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 在默认的 JUnit 生命周期开始之前，做一些其他的操作
+</span><span style="color:#75715e"></span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;method Name：&#34;</span> <span style="color:#f92672">+</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;target：&#34;</span> <span style="color:#f92672">+</span> target<span style="color:#f92672">);</span>
+
+        <span style="color:#75715e">// @Before
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">withBefores</span><span style="color:#f92672">(</span>method<span style="color:#f92672">,</span> target<span style="color:#f92672">,</span> statement<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="myunittest">MyUnitTest</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>MyRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyUnitTest</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">test</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+			<span style="color:#75715e">// noting
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="输出">输出</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">MyRunner:<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">xyz</span><span style="color:#f92672">.</span><span style="color:#a6e22e">kail</span><span style="color:#f92672">.</span><span style="color:#a6e22e">demo</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mock</span><span style="color:#f92672">.</span><span style="color:#a6e22e">one</span><span style="color:#f92672">.</span><span style="color:#a6e22e">MyUnitTest</span>
+method Name<span style="color:#960050;background-color:#1e0010">：</span>test
+target<span style="color:#960050;background-color:#1e0010">：</span>xyz<span style="color:#f92672">.</span><span style="color:#a6e22e">kail</span><span style="color:#f92672">.</span><span style="color:#a6e22e">demo</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mock</span><span style="color:#f92672">.</span><span style="color:#a6e22e">one</span><span style="color:#f92672">.</span><span style="color:#a6e22e">MyUnitTest</span><span style="color:#a6e22e">@3f8f9dd6</span>
+</code></pre></div><h2 id="read-more">Read More</h2>
+<ul>
+<li>官方文档 
+  <a href="https://github.com/junit-team/junit4/wiki/Test-runners#runwith-annotation">@RunWith annotation</a></li>
+<li>
+  <a href="https://my.oschina.net/itblog/blog/1550753">JUnit 高级用法之 @RunWith</a></li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/hello-world-example/Mock/edit/master/HuGo/content/docs/junit4/@RunWith.md" target="_blank" rel="noopener">
+      <img src="/Mock/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+<script>
+var images = document.getElementsByTagName("img")
+console.info(images.length)
+for(var i=0; i<images.length; i++){
+  var image = images[i]
+  var src = image.getAttribute("src");
+  if(src.startsWith("-images")){
+    image.setAttribute("src", "../" + src)
+  }
+}
+</script>
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#runwith-注解">@RunWith 注解</a>
+      <ul>
+        <li><a href="#runner-抽象类">Runner 抽象类</a></li>
+        <li><a href="#常见实现">常见实现</a>
+          <ul>
+            <li><a href="#runwithjunit4class">@RunWith(JUnit4.<strong>class</strong>)</a></li>
+            <li><a href="#runwithmockitojunitrunnerclass">@RunWith(MockitoJUnitRunner.<strong>class</strong>)</a></li>
+            <li><a href="#runwithspringrunnerclass">@RunWith(SpringRunner.<strong>class</strong>)</a></li>
+          </ul>
+        </li>
+        <li><a href="#内建-runner">内建 Runner</a></li>
+        <li><a href="#自定义-runner">自定义 Runner</a>
+          <ul>
+            <li><a href="#myrunner">MyRunner</a></li>
+            <li><a href="#myunittest">MyUnitTest</a></li>
+            <li><a href="#输出">输出</a></li>
+          </ul>
+        </li>
+        <li><a href="#read-more">Read More</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

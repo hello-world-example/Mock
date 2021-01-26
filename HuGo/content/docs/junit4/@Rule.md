@@ -65,5 +65,5 @@ public class MethodNameRule implements TestRule {
 
 ## Read More
 
-- [JUnit 注解之Rule](http://www.testclass.net/junit/rule)
-- [利用Rule扩展JUnit](https://haibin369.iteye.com/blog/2088541)
+- [JUnit 注解之 Rule](http://www.testclass.net/junit/rule)
+- [利用 Rule 扩展 JUnit](https://haibin369.iteye.com/blog/2088541)

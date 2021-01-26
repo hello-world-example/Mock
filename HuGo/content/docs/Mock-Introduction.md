@@ -12,13 +12,13 @@ Mock 最大的功能是帮你把单元测试的耦合分解开，如果你的代
 
 比如一段代码有这样的依赖：
 
-![](images/Mock-Introduction-01.jpg)
+![](-images/Mock-Introduction-01.jpg)
 
 
 
 当我们需要测试A类的时候，如果没有 Mock，则我们需要把整个依赖树都构建出来，而使用 Mock 的话就可以将结构分解开，像下面这样：
 
-![](images/Mock-Introduction-02.jpg)
+![](-images/Mock-Introduction-02.jpg)
 
 
 
