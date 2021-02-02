@@ -11,7 +11,10 @@ import java.util.Map;
 public class HelloController {
 
     @GetMapping("/say/{world}")
-    public Map<String, Object> index(@PathVariable("world") String world, String p1) {
+    public Map<String, Object> index(
+            @PathVariable("world") String world,
+            @RequestParam(value = "p1", required = false) String p1
+    ) {
         final Map<String, Object> result = new LinkedHashMap<>();
         result.put("world", world);
         result.put("p1", p1);
