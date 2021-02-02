@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="MockMvc 简介  MockMvc 不需要启动 Web 容器 测试方式基于 单元测试 和 集成测试 之间  静态导入 // 构造 MockMvc 测试环境，如：增加 Filter、Interceptors、ControllerAdvice 等 import org.springframework.test.web.servlet.setup.MockMvcBuilders.*; // 创建 请求信息，如：url、header、cookie 等 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*; // Assert 断言操作，如：MockMvcResultMatchers.status().is(200) 断言 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*; // Mock Response 处理方式，如： MockMvcResultHandlers.print() 打印响应信息到控制台 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.*; 主要流程  MockMvcBuilders.* 创建 MockMvc mockMvc.perform(RequestBuilder) 执行 MockMvcRequestBuilders.* 构造的请求信息 MockMvcResultMatchers.* 对响应结果进行断言  standaloneSetup 方式  该方法更接近与 单元测试
+ MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new HelloController()).build(); 如果只是为了测试 Filter、Interceptors 等，不测试 HelloController 逻辑，可以 Mock HelloController"><meta property="og:title" content="" />
+<meta property="og:description" content="MockMvc 简介  MockMvc 不需要启动 Web 容器 测试方式基于 单元测试 和 集成测试 之间  静态导入 // 构造 MockMvc 测试环境，如：增加 Filter、Interceptors、ControllerAdvice 等 import org.springframework.test.web.servlet.setup.MockMvcBuilders.*; // 创建 请求信息，如：url、header、cookie 等 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*; // Assert 断言操作，如：MockMvcResultMatchers.status().is(200) 断言 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*; // Mock Response 处理方式，如： MockMvcResultHandlers.print() 打印响应信息到控制台 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.*; 主要流程  MockMvcBuilders.* 创建 MockMvc mockMvc.perform(RequestBuilder) 执行 MockMvcRequestBuilders.* 构造的请求信息 MockMvcResultMatchers.* 对响应结果进行断言  standaloneSetup 方式  该方法更接近与 单元测试
+ MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new HelloController()).build(); 如果只是为了测试 Filter、Interceptors 等，不测试 HelloController 逻辑，可以 Mock HelloController" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hello-world-example.github.io/Mock/docs/spring-test/MockMvc/" />
+<meta property="article:modified_time" content="2021-02-02T15:13:02+08:00" />
+<title>Mock Mvc | Mock</title>
+<link rel="icon" href="/Mock/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/Mock/book.min.d436f463c9471cfab26a8b71cd2f50b6abf5225806391453da4ca111d1834fef.css" integrity="sha256-1Db0Y8lHHPqyaotxzS9Qtqv1IlgGORRT2kyhEdGDT&#43;8=">
+
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/Mock"><span>Mock</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><strong>JUnit4</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/junit4/RunWith/">@RunWith</a></li>
+<li>
+  <a href="/Mock/docs/junit4/Rule/">@Rule</a></li>
+</ul>
+</li>
+<li>
+  <a href="/Mock/docs/Mock-Introduction/">Mock 简介</a></li>
+<li><strong>Mockito</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/mockito/Java-Doc/">[译] Java Doc</a></li>
+<li>
+  <a href="/Mock/docs/mockito/Mockito-Tutorial/">[转] Mockito 教程</a></li>
+<li>
+  <a href="/Mock/docs/mockito/in-action/DAO-Simple/">Mock 持久层依赖</a></li>
+</ul>
+</li>
+<li><strong>Power Mock</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/powermock/Introduction/">Power Mock 介绍</a></li>
+</ul>
+</li>
+<li><strong>Spring Test</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/spring-test/MockMvc/"class=active>MockMvc</a></li>
+</ul>
+</li>
+<li>
+  <a href="//hello-world-example.github.io/Spring-Boot/#/unit-test/index">Spring Boot Test</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/Mock/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Mock Mvc</strong>
+
+  <label for="toc-control">
+    <img src="/Mock/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#mockmvc">MockMvc</a>
+      <ul>
+        <li><a href="#简介">简介</a></li>
+        <li><a href="#静态导入">静态导入</a></li>
+        <li><a href="#主要流程">主要流程</a></li>
+        <li><a href="#standalonesetup-方式">standaloneSetup 方式</a></li>
+        <li><a href="#webappcontextsetup-方式">webAppContextSetup 方式</a>
+          <ul>
+            <li><a href="#方式-1">方式 1</a></li>
+            <li><a href="#方式-2-自定义扫描类">方式 2 自定义扫描类</a></li>
+            <li><a href="#方式-3-xml-方式">方式 3 xml 方式</a></li>
+            <li><a href="#方式4-spring-boot-方式">方式4 Spring Boot 方式</a></li>
+          </ul>
+        </li>
+        <li><a href="#read-more">Read More</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="mockmvc">MockMvc</h1>
+<h2 id="简介">简介</h2>
+<ul>
+<li><strong>MockMvc</strong> 不需要启动 Web 容器</li>
+<li>测试方式基于 <strong>单元测试</strong>  和 <strong>集成测试</strong> 之间</li>
+</ul>
+<h2 id="静态导入">静态导入</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 构造 MockMvc 测试环境，如：增加 Filter、Interceptors、ControllerAdvice 等
+</span><span style="color:#75715e"></span><span style="color:#f92672">import</span> org.springframework.test.web.servlet.setup.MockMvcBuilders.*<span style="color:#f92672">;</span>
+
+<span style="color:#75715e">// 创建 请求信息，如：url、header、cookie 等
+</span><span style="color:#75715e"></span><span style="color:#f92672">import</span> org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*<span style="color:#f92672">;</span>
+
+<span style="color:#75715e">// Assert 断言操作，如：MockMvcResultMatchers.status().is(200) 断言
+</span><span style="color:#75715e"></span><span style="color:#f92672">import</span> org.springframework.test.web.servlet.result.MockMvcResultMatchers.*<span style="color:#f92672">;</span>
+<span style="color:#75715e">// Mock Response 处理方式，如： MockMvcResultHandlers.print() 打印响应信息到控制台
+</span><span style="color:#75715e"></span><span style="color:#f92672">import</span> org.springframework.test.web.servlet.result.MockMvcResultHandlers.*<span style="color:#f92672">;</span>
+</code></pre></div><h2 id="主要流程">主要流程</h2>
+<ul>
+<li><code>MockMvcBuilders.*</code> 创建 <code>MockMvc</code></li>
+<li><code>mockMvc.perform(RequestBuilder)</code> 执行 <code>MockMvcRequestBuilders.*</code> 构造的请求信息</li>
+<li><code>MockMvcResultMatchers.*</code> 对响应结果进行断言</li>
+</ul>
+<h2 id="standalonesetup-方式">standaloneSetup 方式</h2>
+<blockquote>
+<p>该方法更接近与 <strong>单元测试</strong></p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">MockMvc mockMvc <span style="color:#f92672">=</span> MockMvcBuilders<span style="color:#f92672">.</span><span style="color:#a6e22e">standaloneSetup</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> HelloController<span style="color:#f92672">()).</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+</code></pre></div><p>如果只是为了测试 <code>Filter</code>、<code>Interceptors</code> 等，不测试 <code>HelloController</code> 逻辑，可以 Mock  <code>HelloController</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 使用 @Mock 注解
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>MockitoJUnitRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WebMvcMockitoTest</span> <span style="color:#f92672">{</span>
+
+  <span style="color:#a6e22e">@Mock</span>
+  <span style="color:#66d9ef">private</span> HelloController helloController<span style="color:#f92672">;</span>
+
+  <span style="color:#66d9ef">private</span> MockMvc mockMvc<span style="color:#f92672">;</span>
+
+  <span style="color:#75715e">/**
+</span><span style="color:#75715e">   * 初始化 Mock 逻辑
+</span><span style="color:#75715e">   */</span>
+  <span style="color:#a6e22e">@Before</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">before</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">//
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 当参数是 &#34;p&#34; 的时候，返回 {&#34;p1&#34;:&#34;p&#34;}
+</span><span style="color:#75715e"></span>    Mockito<span style="color:#f92672">.</span><span style="color:#a6e22e">when</span><span style="color:#f92672">(</span>helloController<span style="color:#f92672">.</span><span style="color:#a6e22e">index</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;w&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;p&#34;</span><span style="color:#f92672">))</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">thenReturn</span><span style="color:#f92672">(</span>Collections<span style="color:#f92672">.</span><span style="color:#a6e22e">singletonMap</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;p1&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;p&#34;</span><span style="color:#f92672">));</span>
+
+    <span style="color:#75715e">// 当参数是 &#34;ex&#34; 的时候，抛出 IllegalArgumentException 异常
+</span><span style="color:#75715e"></span>    Mockito<span style="color:#f92672">.</span><span style="color:#a6e22e">when</span><span style="color:#f92672">(</span>helloController<span style="color:#f92672">.</span><span style="color:#a6e22e">index</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;w&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;ex&#34;</span><span style="color:#f92672">))</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">thenThrow</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;参数错误&#34;</span><span style="color:#f92672">));</span>
+
+    mockMvc <span style="color:#f92672">=</span> MockMvcBuilders<span style="color:#f92672">.</span><span style="color:#a6e22e">standaloneSetup</span><span style="color:#f92672">(</span>helloController<span style="color:#f92672">)</span>
+      <span style="color:#75715e">// Filter
+</span><span style="color:#75715e"></span>      <span style="color:#f92672">.</span><span style="color:#a6e22e">addFilter</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ParamFilter<span style="color:#f92672">())</span>
+      <span style="color:#75715e">// Interceptor
+</span><span style="color:#75715e"></span>      <span style="color:#f92672">.</span><span style="color:#a6e22e">addInterceptors</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ParamHandlerInterceptor<span style="color:#f92672">())</span>
+      <span style="color:#75715e">// ControllerAdvice
+</span><span style="color:#75715e"></span>      <span style="color:#f92672">.</span><span style="color:#a6e22e">setControllerAdvice</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ExceptionControllerAdvice<span style="color:#f92672">())</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+  <span style="color:#f92672">}</span>
+
+  <span style="color:#a6e22e">@Test</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testSuccess</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">final</span> MockHttpServletRequestBuilder request <span style="color:#f92672">=</span> get<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/demo/hello/say/{world}&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;w&#34;</span><span style="color:#f92672">)</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">param</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;p1&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;p&#34;</span><span style="color:#f92672">);</span>
+
+    mockMvc<span style="color:#f92672">.</span><span style="color:#a6e22e">perform</span><span style="color:#f92672">(</span>request<span style="color:#f92672">)</span>
+      <span style="color:#75715e">// 打印详细信息
+</span><span style="color:#75715e"></span>      <span style="color:#f92672">.</span><span style="color:#a6e22e">andDo</span><span style="color:#f92672">(</span>MockMvcResultHandlers<span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">())</span>
+      <span style="color:#75715e">// 返回校验
+</span><span style="color:#75715e"></span>      <span style="color:#f92672">.</span><span style="color:#a6e22e">andExpect</span><span style="color:#f92672">(</span>MockMvcResultMatchers<span style="color:#f92672">.</span><span style="color:#a6e22e">status</span><span style="color:#f92672">().</span><span style="color:#a6e22e">is</span><span style="color:#f92672">(</span>200<span style="color:#f92672">))</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">andExpect</span><span style="color:#f92672">(</span>MockMvcResultMatchers<span style="color:#f92672">.</span><span style="color:#a6e22e">jsonPath</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;$.p1&#34;</span><span style="color:#f92672">,</span> Matchers<span style="color:#f92672">.</span><span style="color:#a6e22e">equalTo</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;p&#34;</span><span style="color:#f92672">)))</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">andExpect</span><span style="color:#f92672">(</span>MockMvcResultMatchers<span style="color:#f92672">.</span><span style="color:#a6e22e">header</span><span style="color:#f92672">().</span><span style="color:#a6e22e">string</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Content-Type&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;application/json&#34;</span><span style="color:#f92672">));</span>
+  <span style="color:#f92672">}</span>
+
+  <span style="color:#a6e22e">@Test</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testException</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">final</span> MockHttpServletRequestBuilder request <span style="color:#f92672">=</span> get<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/demo/hello/say/{world}&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;w&#34;</span><span style="color:#f92672">)</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">param</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;p1&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;ex&#34;</span><span style="color:#f92672">)</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">characterEncoding</span><span style="color:#f92672">(</span>StandardCharsets<span style="color:#f92672">.</span><span style="color:#a6e22e">UTF_8</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">());</span>
+
+    mockMvc<span style="color:#f92672">.</span><span style="color:#a6e22e">perform</span><span style="color:#f92672">(</span>request<span style="color:#f92672">)</span>
+      <span style="color:#75715e">// 设置 Response 编码
+</span><span style="color:#75715e"></span>      <span style="color:#f92672">.</span><span style="color:#a6e22e">andDo</span><span style="color:#f92672">(</span>result <span style="color:#f92672">-&gt;</span> result<span style="color:#f92672">.</span><span style="color:#a6e22e">getResponse</span><span style="color:#f92672">().</span><span style="color:#a6e22e">setCharacterEncoding</span><span style="color:#f92672">(</span>StandardCharsets<span style="color:#f92672">.</span><span style="color:#a6e22e">UTF_8</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">()))</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">andDo</span><span style="color:#f92672">(</span>MockMvcResultHandlers<span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">())</span>
+      <span style="color:#75715e">// 返回校验
+</span><span style="color:#75715e"></span>      <span style="color:#f92672">.</span><span style="color:#a6e22e">andExpect</span><span style="color:#f92672">(</span>MockMvcResultMatchers<span style="color:#f92672">.</span><span style="color:#a6e22e">status</span><span style="color:#f92672">().</span><span style="color:#a6e22e">is</span><span style="color:#f92672">(</span>200<span style="color:#f92672">))</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">andExpect</span><span style="color:#f92672">(</span>MockMvcResultMatchers<span style="color:#f92672">.</span><span style="color:#a6e22e">jsonPath</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;$.code&#34;</span><span style="color:#f92672">,</span> Matchers<span style="color:#f92672">.</span><span style="color:#a6e22e">equalTo</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;500&#34;</span><span style="color:#f92672">)))</span>
+      <span style="color:#f92672">;</span>
+  <span style="color:#f92672">}</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="webappcontextsetup-方式">webAppContextSetup 方式</h2>
+<p>该方式会加载完整的 Spring 配置</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// wac : WebApplicationContext
+</span><span style="color:#75715e"></span>MockMvcBuilders<span style="color:#f92672">.</span><span style="color:#a6e22e">webAppContextSetup</span><span style="color:#f92672">(</span>wac<span style="color:#f92672">).</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+</code></pre></div><p>关键是构造 <code>WebApplicationContext</code> 实例</p>
+<h3 id="方式-1">方式 1</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>SpringRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@WebAppConfiguration</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WebMvcContextTest</span> <span style="color:#f92672">{</span>
+
+  <span style="color:#a6e22e">@Resource</span>
+  <span style="color:#66d9ef">private</span> WebApplicationContext wac<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="方式-2-自定义扫描类">方式 2 自定义扫描类</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>SpringRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@WebAppConfiguration</span>
+<span style="color:#a6e22e">@ContextConfiguration</span><span style="color:#f92672">(</span>classes <span style="color:#f92672">=</span> HelloController<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WebMvcContextTest</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Resource</span>
+    <span style="color:#66d9ef">private</span> WebApplicationContext wac<span style="color:#f92672">;</span>
+
+    <span style="color:#a6e22e">@Resource</span>
+    <span style="color:#66d9ef">private</span> HelloController helloController<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="方式-3-xml-方式">方式 3 xml 方式</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>SpringRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@WebAppConfiguration</span>
+<span style="color:#a6e22e">@ContextConfiguration</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;classpath:applicationContext.xml&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WebMvcContextTest</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Resource</span>
+    <span style="color:#66d9ef">private</span> WebApplicationContext wac<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div><p><strong>applicationContext.xml</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#f92672">&lt;beans</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans&#34;</span>
+       <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+       <span style="color:#a6e22e">xmlns:context=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/context&#34;</span>
+       <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans
+</span><span style="color:#e6db74">                           http://www.springframework.org/schema/beans/spring-beans.xsd
+</span><span style="color:#e6db74">                           http://www.springframework.org/schema/context
+</span><span style="color:#e6db74">                           http://www.springframework.org/schema/context/spring-context.xsd&#34;</span>
+<span style="color:#f92672">&gt;</span>
+
+    <span style="color:#f92672">&lt;context:annotation-config/&gt;</span>
+    <span style="color:#f92672">&lt;context:component-scan</span> <span style="color:#a6e22e">base-package=</span><span style="color:#e6db74">&#34;xyz.kail.demo&#34;</span><span style="color:#f92672">/&gt;</span>
+
+<span style="color:#f92672">&lt;/beans&gt;</span>
+</code></pre></div><h3 id="方式4-spring-boot-方式">方式4 Spring Boot 方式</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>SpringRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@SpringBootTest</span><span style="color:#f92672">(</span>classes <span style="color:#f92672">=</span> MockApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WebMvcContextTest</span> <span style="color:#f92672">{</span>
+  
+  <span style="color:#a6e22e">@Resource</span>
+  <span style="color:#66d9ef">private</span> WebApplicationContext wac<span style="color:#f92672">;</span>
+  
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="read-more">Read More</h2>
+<ul>
+<li>Spring Testing 
+  <a href="https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-framework">3.7. MockMvc</a></li>
+<li>
+  <a href="https://github.com/spring-projects/spring-framework/tree/master/spring-test/src/test/java/org/springframework/test/web/servlet/samples">官方测试用例</a></li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+  <div>
+    
+    <a class="flex align-center" href="https://github.com/hello-world-example/Mock/commit/68d100c22ea37bbc4e5534111ee456c65724c988" title='Last modified by kaibin.yang | Feb 2, 2021' target="_blank" rel="noopener">
+      <img src="/Mock/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>Feb 2, 2021</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/hello-world-example/Mock/edit/master/HuGo/content/docs/spring-test/MockMvc.md" target="_blank" rel="noopener">
+      <img src="/Mock/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+<script>
+var images = document.getElementsByTagName("img")
+console.info(images.length)
+for(var i=0; i<images.length; i++){
+  var image = images[i]
+  var src = image.getAttribute("src");
+  if(src.startsWith("-images")){
+    image.setAttribute("src", "../" + src)
+  }
+}
+</script>
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#mockmvc">MockMvc</a>
+      <ul>
+        <li><a href="#简介">简介</a></li>
+        <li><a href="#静态导入">静态导入</a></li>
+        <li><a href="#主要流程">主要流程</a></li>
+        <li><a href="#standalonesetup-方式">standaloneSetup 方式</a></li>
+        <li><a href="#webappcontextsetup-方式">webAppContextSetup 方式</a>
+          <ul>
+            <li><a href="#方式-1">方式 1</a></li>
+            <li><a href="#方式-2-自定义扫描类">方式 2 自定义扫描类</a></li>
+            <li><a href="#方式-3-xml-方式">方式 3 xml 方式</a></li>
+            <li><a href="#方式4-spring-boot-方式">方式4 Spring Boot 方式</a></li>
+          </ul>
+        </li>
+        <li><a href="#read-more">Read More</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

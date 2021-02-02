@@ -8,7 +8,7 @@
 <meta property="og:description" content="Mock 持久层依赖 Maven 依赖 &lt;dependency&gt; &lt;groupId&gt;org.mockito&lt;/groupId&gt; &lt;artifactId&gt;mockito-core&lt;/artifactId&gt; &lt;version&gt;1.10.19&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework&lt;/groupId&gt; &lt;artifactId&gt;spring-test&lt;/artifactId&gt; &lt;version&gt;4.3.24.RELEASE&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;com.54chen&lt;/groupId&gt; &lt;artifactId&gt;paoding-rose-jade&lt;/artifactId&gt; &lt;version&gt;1.1&lt;/version&gt; &lt;/dependency&gt; 项目结构 src/java/xyz.kail.demo ├── dao │ └── AccountDAO.java ├── exception │ └── IllegalAccountException.java ├── model │ └── AccountVO.java └── service └── AccountService.java AccountVO.java import lombok.Data; import lombok.NoArgsConstructor; @Data @NoArgsConstructor public class AccountVO { /** * 账户名(唯一) */ private String uname; /** * 账户密码 */ private String passwd; public AccountVO(String uname) { this.uname = uname; } public AccountVO(String uname, String passwd) { this." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hello-world-example.github.io/Mock/docs/mockito/in-action/DAO-Simple/" />
-
+<meta property="article:modified_time" content="2021-01-26T15:33:40+08:00" />
 <title>D a O Simple | Mock</title>
 <link rel="icon" href="/Mock/favicon.png" type="image/x-icon">
 
@@ -71,6 +71,12 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li>
   <a href="/Mock/docs/powermock/Introduction/">Power Mock 介绍</a></li>
+</ul>
+</li>
+<li><strong>Spring Test</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/spring-test/MockMvc/">MockMvc</a></li>
 </ul>
 </li>
 <li>
@@ -369,6 +375,14 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex justify-between">
 
 
+
+  <div>
+    
+    <a class="flex align-center" href="https://github.com/hello-world-example/Mock/commit/e079c4936c5c6932844a91566934fa16d211c856" title='Last modified by kaibin.yang | Jan 26, 2021' target="_blank" rel="noopener">
+      <img src="/Mock/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>Jan 26, 2021</span>
+    </a>
+  </div>
 
 
 

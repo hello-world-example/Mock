@@ -15,7 +15,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://hello-world-example.github.io/Mock/_sidebar/</guid>
-      <description> JUnit4   @RunWith  @Rule    Mock 简介 Mockito   [译] Java Doc  [转] Mockito 教程  Mock 持久层依赖   Power Mock   Power Mock 介绍    Spring Boot Test  </description>
+      <description> JUnit4   @RunWith  @Rule    Mock 简介 Mockito   [译] Java Doc  [转] Mockito 教程  Mock 持久层依赖   Power Mock   Power Mock 介绍   Spring Test   MockMvc    Spring Boot Test  </description>
     </item>
     
     <item>
@@ -96,6 +96,16 @@ PowerMock 使用一个 自定义类加载器 和 字节码操作 来模拟
  静态方法 构造函数 final 类 和 方法 私有方法 去 除静态初始化器 &amp;hellip;  @PrepareForTest 这个注解告诉 PowerMock 准备测试某些类，需要使用此注解定义的类通常是需要进行字节码操作的类，包括带有 final、private、static 或 native方法 的类。
 这个注解可以放在 测试类 或者 单独的测试方法 中。
  如果放在一个类上，这个测试类中的所有测试方法都将由 PowerMock处理 如果要为单个方法重写此行为，只需在特定测试方法上放置 @PrepareForTest 注解。例如，如果您想在测试方法A中修改类X，但在测试方法B中希望X完好无损，那么这很有用。在这种情况下，您在方法B上放置@PrepareForTest，并从value()列表中排除类X 有时你需要准备内部类来进行测试，这可以通过提供应该模拟到 fullyQualifiedNames() 列表的内部类的完全限定名来完成  Target( { ElementType.TYPE, ElementType.METHOD }) @Retention(RetentionPolicy.RUNTIME) @Documented @Inherited public @interface PrepareForTest { Class&amp;lt;?&amp;gt;[] value() default IndicateReloadClass.class; String[] fullyQualifiedNames() default &amp;#34;&amp;#34;; ByteCodeFramework byteCodeFramework() default ByteCodeFramework.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://hello-world-example.github.io/Mock/docs/spring-test/MockMvc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://hello-world-example.github.io/Mock/docs/spring-test/MockMvc/</guid>
+      <description>MockMvc 简介  MockMvc 不需要启动 Web 容器 测试方式基于 单元测试 和 集成测试 之间  静态导入 // 构造 MockMvc 测试环境，如：增加 Filter、Interceptors、ControllerAdvice 等 import org.springframework.test.web.servlet.setup.MockMvcBuilders.*; // 创建 请求信息，如：url、header、cookie 等 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*; // Assert 断言操作，如：MockMvcResultMatchers.status().is(200) 断言 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*; // Mock Response 处理方式，如： MockMvcResultHandlers.print() 打印响应信息到控制台 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.*; 主要流程  MockMvcBuilders.* 创建 MockMvc mockMvc.perform(RequestBuilder) 执行 MockMvcRequestBuilders.* 构造的请求信息 MockMvcResultMatchers.* 对响应结果进行断言  standaloneSetup 方式  该方法更接近与 单元测试
+ MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new HelloController()).build(); 如果只是为了测试 Filter、Interceptors 等，不测试 HelloController 逻辑，可以 Mock HelloController</description>
     </item>
     
   </channel>

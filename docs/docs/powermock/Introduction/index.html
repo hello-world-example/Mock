@@ -16,7 +16,7 @@ PowerMock 使用一个 自定义类加载器 和 字节码操作 来模拟
  如果放在一个类上，这个测试类中的所有测试方法都将由 PowerMock处理 如果要为单个方法重写此行为，只需在特定测试方法上放置 @PrepareForTest 注解。例如，如果您想在测试方法A中修改类X，但在测试方法B中希望X完好无损，那么这很有用。在这种情况下，您在方法B上放置@PrepareForTest，并从value()列表中排除类X 有时你需要准备内部类来进行测试，这可以通过提供应该模拟到 fullyQualifiedNames() 列表的内部类的完全限定名来完成  Target( { ElementType.TYPE, ElementType.METHOD }) @Retention(RetentionPolicy.RUNTIME) @Documented @Inherited public @interface PrepareForTest { Class&lt;?&gt;[] value() default IndicateReloadClass.class; String[] fullyQualifiedNames() default &#34;&#34;; ByteCodeFramework byteCodeFramework() default ByteCodeFramework." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hello-world-example.github.io/Mock/docs/powermock/Introduction/" />
-
+<meta property="article:modified_time" content="2021-01-26T15:33:40+08:00" />
 <title>Introduction | Mock</title>
 <link rel="icon" href="/Mock/favicon.png" type="image/x-icon">
 
@@ -79,6 +79,12 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li>
   <a href="/Mock/docs/powermock/Introduction/"class=active>Power Mock 介绍</a></li>
+</ul>
+</li>
+<li><strong>Spring Test</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/spring-test/MockMvc/">MockMvc</a></li>
 </ul>
 </li>
 <li>
@@ -485,6 +491,14 @@ Also, this error might show up because:
   <div class="flex justify-between">
 
 
+
+  <div>
+    
+    <a class="flex align-center" href="https://github.com/hello-world-example/Mock/commit/e079c4936c5c6932844a91566934fa16d211c856" title='Last modified by kaibin.yang | Jan 26, 2021' target="_blank" rel="noopener">
+      <img src="/Mock/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>Jan 26, 2021</span>
+    </a>
+  </div>
 
 
 

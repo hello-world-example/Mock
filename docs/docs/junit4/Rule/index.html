@@ -12,7 +12,7 @@
 内建实现  TemporaryFolder：测试可以创建文件与目录并且会在测试运行结束后将其删除。这对于那些与文件系统打交道且独立运行的测试来说很有用。 ExternalResource：这是一种资源使用模式，它会提前建立好资源并且会在测试结束后将其销毁。这对于那些使用socket、嵌入式服务器等资源的测试来说很有用。 ErrorCollector：可以让测试在失败后继续运行并在测试结束时报告所有错误。这对于那些需要验证大量独立条件的测试来说很有用（尽管这本身可能是个“test smell”）。 ExpectedException：可以在测试中指定期望的异常类型与消息。 Timeout：为类中的所有测试应用相同的超时时间。  使用示例 public class RuleTestDemo { // 使用Timeout这个Rule  @Rule public Timeout timeout = new Timeout(1000); @Test public void testMethod1() throws Exception { Thread.sleep(1001); } @Test public void testMethod2() throws Exception { Thread.sleep(999); } } 自定义示例 public class MethodNameRule implements TestRule { public Statement apply(final Statement base, final Description description) { return new Statement() { @Override public void evaluate() throws Throwable { //在测试方法运行之前做一些事情，在base." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hello-world-example.github.io/Mock/docs/junit4/Rule/" />
-
+<meta property="article:modified_time" content="2021-01-26T15:33:40+08:00" />
 <title>@ Rule | Mock</title>
 <link rel="icon" href="/Mock/favicon.png" type="image/x-icon">
 
@@ -75,6 +75,12 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li>
   <a href="/Mock/docs/powermock/Introduction/">Power Mock 介绍</a></li>
+</ul>
+</li>
+<li><strong>Spring Test</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/spring-test/MockMvc/">MockMvc</a></li>
 </ul>
 </li>
 <li>
@@ -206,6 +212,14 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex justify-between">
 
 
+
+  <div>
+    
+    <a class="flex align-center" href="https://github.com/hello-world-example/Mock/commit/e079c4936c5c6932844a91566934fa16d211c856" title='Last modified by kaibin.yang | Jan 26, 2021' target="_blank" rel="noopener">
+      <img src="/Mock/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>Jan 26, 2021</span>
+    </a>
+  </div>
 
 
 
