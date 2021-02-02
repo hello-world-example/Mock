@@ -99,5 +99,14 @@ PowerMock 使用一个 自定义类加载器 和 字节码操作 来模拟
  MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new HelloController()).build(); 如果只是为了测试 Filter、Interceptors 等，不测试 HelloController 逻辑，可以 Mock HelloController</description>
     </item>
     
+    <item>
+      <title></title>
+      <link>https://hello-world-example.github.io/Mock/docs/spring-test/WebTestClient/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://hello-world-example.github.io/Mock/docs/spring-test/WebTestClient/</guid>
+      <description>WebTestClient  WebTestClient @Since 5.0 为 WebFlux 设计  bindToController final WebTestClient testClient = WebTestClient.bindToController(new HelloController()).build(); testClient.get() .uri(&amp;#34;/demo/hello/say/{world}?p1=P&amp;#34;, &amp;#34;W&amp;#34;) .exchange() .expectStatus().isOk() .expectBody().jsonPath(&amp;#34;$.p1&amp;#34;).value(Matchers.equalTo(&amp;#34;P&amp;#34;)); Read More  Spring Testing 3.6. WebTestClient  </description>
+    </item>
+    
   </channel>
 </rss>

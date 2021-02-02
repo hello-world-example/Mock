@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="WebTestClient  WebTestClient @Since 5.0 为 WebFlux 设计  bindToController final WebTestClient testClient = WebTestClient.bindToController(new HelloController()).build(); testClient.get() .uri(&#34;/demo/hello/say/{world}?p1=P&#34;, &#34;W&#34;) .exchange() .expectStatus().isOk() .expectBody().jsonPath(&#34;$.p1&#34;).value(Matchers.equalTo(&#34;P&#34;)); Read More  Spring Testing 3.6. WebTestClient  "><meta property="og:title" content="" />
+<meta property="og:description" content="WebTestClient  WebTestClient @Since 5.0 为 WebFlux 设计  bindToController final WebTestClient testClient = WebTestClient.bindToController(new HelloController()).build(); testClient.get() .uri(&#34;/demo/hello/say/{world}?p1=P&#34;, &#34;W&#34;) .exchange() .expectStatus().isOk() .expectBody().jsonPath(&#34;$.p1&#34;).value(Matchers.equalTo(&#34;P&#34;)); Read More  Spring Testing 3.6. WebTestClient  " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hello-world-example.github.io/Mock/docs/spring-test/WebTestClient/" />
+
+<title>Web Test Client | Mock</title>
+<link rel="icon" href="/Mock/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/Mock/book.min.d436f463c9471cfab26a8b71cd2f50b6abf5225806391453da4ca111d1834fef.css" integrity="sha256-1Db0Y8lHHPqyaotxzS9Qtqv1IlgGORRT2kyhEdGDT&#43;8=">
+
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/Mock"><span>Mock</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><strong>JUnit4</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/junit4/RunWith/">@RunWith</a></li>
+<li>
+  <a href="/Mock/docs/junit4/Rule/">@Rule</a></li>
+</ul>
+</li>
+<li>
+  <a href="/Mock/docs/Mock-Introduction/">Mock 简介</a></li>
+<li><strong>Mockito</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/mockito/Java-Doc/">[译] Java Doc</a></li>
+<li>
+  <a href="/Mock/docs/mockito/Mockito-Tutorial/">[转] Mockito 教程</a></li>
+<li>
+  <a href="/Mock/docs/mockito/in-action/DAO-Simple/">Mock 持久层依赖</a></li>
+</ul>
+</li>
+<li><strong>Power Mock</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/powermock/Introduction/">Power Mock 介绍</a></li>
+</ul>
+</li>
+<li><strong>Spring Test</strong>
+<ul>
+<li>
+  <a href="/Mock/docs/spring-test/MockMvc/">MockMvc</a></li>
+<li>
+  <a href="/Mock/docs/spring-test/WebTestClient/"class=active>WebTestClient</a></li>
+</ul>
+</li>
+<li>
+  <a href="//hello-world-example.github.io/Spring-Boot/#/unit-test/index">Spring Boot Test</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/Mock/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Web Test Client</strong>
+
+  <label for="toc-control">
+    <img src="/Mock/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#webtestclient">WebTestClient</a>
+      <ul>
+        <li><a href="#bindtocontroller">bindToController</a></li>
+        <li><a href="#read-more">Read More</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="webtestclient">WebTestClient</h1>
+<ul>
+<li><code>WebTestClient</code> @Since 5.0</li>
+<li>为 <code>WebFlux</code> 设计</li>
+</ul>
+<h2 id="bindtocontroller">bindToController</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> WebTestClient testClient <span style="color:#f92672">=</span> WebTestClient<span style="color:#f92672">.</span><span style="color:#a6e22e">bindToController</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> HelloController<span style="color:#f92672">()).</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+
+testClient<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">()</span>
+  <span style="color:#f92672">.</span><span style="color:#a6e22e">uri</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/demo/hello/say/{world}?p1=P&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;W&#34;</span><span style="color:#f92672">)</span>
+  <span style="color:#f92672">.</span><span style="color:#a6e22e">exchange</span><span style="color:#f92672">()</span>
+  <span style="color:#f92672">.</span><span style="color:#a6e22e">expectStatus</span><span style="color:#f92672">().</span><span style="color:#a6e22e">isOk</span><span style="color:#f92672">()</span>
+  <span style="color:#f92672">.</span><span style="color:#a6e22e">expectBody</span><span style="color:#f92672">().</span><span style="color:#a6e22e">jsonPath</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;$.p1&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">value</span><span style="color:#f92672">(</span>Matchers<span style="color:#f92672">.</span><span style="color:#a6e22e">equalTo</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;P&#34;</span><span style="color:#f92672">));</span>
+</code></pre></div><h2 id="read-more">Read More</h2>
+<ul>
+<li>Spring Testing 
+  <a href="https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#webtestclient">3.6. WebTestClient</a></li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/hello-world-example/Mock/edit/master/HuGo/content/docs/spring-test/WebTestClient.md" target="_blank" rel="noopener">
+      <img src="/Mock/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+</div>
+
+ 
+        
+<script>
+var images = document.getElementsByTagName("img")
+console.info(images.length)
+for(var i=0; i<images.length; i++){
+  var image = images[i]
+  var src = image.getAttribute("src");
+  if(src.startsWith("-images")){
+    image.setAttribute("src", "../" + src)
+  }
+}
+</script>
+
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#webtestclient">WebTestClient</a>
+      <ul>
+        <li><a href="#bindtocontroller">bindToController</a></li>
+        <li><a href="#read-more">Read More</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

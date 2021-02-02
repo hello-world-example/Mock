@@ -14,6 +14,7 @@ headless: true
   * [Power Mock 介绍]({{< relref "/docs/powermock/Introduction.md" >}})
 * **Spring Test**
   * [MockMvc]({{< relref "/docs/spring-test/MockMvc.md" >}})
+  * [WebTestClient]({{< relref "/docs/spring-test/WebTestClient.md" >}})
 * [Spring Boot Test](//hello-world-example.github.io/Spring-Boot/#/unit-test/index)
 
 
