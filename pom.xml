@@ -12,6 +12,7 @@
         <module>mock-ito</module>
         <module>mock-power</module>
         <module>mock-spring</module>
+        <module>mock-junit5</module>
     </modules>
 
 
