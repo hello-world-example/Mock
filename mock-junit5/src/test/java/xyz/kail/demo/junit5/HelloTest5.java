@@ -1,23 +1,60 @@
 package xyz.kail.demo.junit5;
 
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runners.Parameterized;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @DisplayName("jupiter 入门")
 public class HelloTest5 {
 
+    @BeforeAll
+    public static void init() {
+        System.out.println("@BeforeAll");
+    }
+
     @BeforeEach
-    public void beforeTest() {
+    public void create() {
         System.out.println("@BeforeEach");
     }
 
-    @Test
-    @TestFactory
-    @DisplayName("测试1")
-    public void testOne() {
-        System.out.println("测试1");
+    @Nested
+    class AddTest {
+
+        @Test
+        @DisplayName("Test 1 + 2 = 3")
+        public void testAdd() {
+            assertEquals(3, 1 + 2);
+        }
+
+        @Test
+        @DisplayName("Test -1 + 2 = 1")
+        public void testAdd2() {
+            assertEquals(1, -1 + 2);
+        }
     }
 
+
+    @RepeatedTest(5)
+    @DisplayName("RepeatedTest 3 - 2 = 1")
+    public void testSubtract() {
+        assertEquals(1, 3 - 2);
+    }
+
+    @Test
+    @Disabled
+    @DisplayName("disabled test")
+    public void ignoredTest() {
+        System.out.println("This test is disabled");
+    }
+
+    @AfterEach
+    public void destroy() {
+        System.out.println("@AfterEach");
+    }
+
+    @AfterAll
+    public static void cleanup() {
+        System.out.println("@AfterAll");
+    }
 }

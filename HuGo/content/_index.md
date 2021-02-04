@@ -29,6 +29,7 @@ type: docs
 ## JUnit5
 
 - https://junit.org/junit5/
+- [JUnit5 新特性](https://www.ibm.com/developerworks/cn/java/j-junit5/)
 - [Junit5 系列索引](https://blog.csdn.net/ryo1060732496/article/details/80792246)
 
 
